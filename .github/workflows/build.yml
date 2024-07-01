@@ -22,21 +22,21 @@ jobs:
 
     - name: Install VCPKG if not already installed
       run: |
-          git clone https://github.com/microsoft/vcpkg.git source/vcpkg
-          pushd source/vcpkg
+          git clone https://github.com/microsoft/vcpkg.git vcpkg/vcpkg
+          pushd vcpkg/vcpkg
           .\bootstrap-vcpkg.bat
           popd
 
 
     - name: Ensure vcpkg.json is available
       run: |
-          copy Source/vcpkg.json source/vcpkg/vcpkg.json
+          copy Source/vcpkg.json vcpkg/vcpkg/vcpkg.json
 
     - name: Build Dependencies with VCPKG
       run: |
         ls
-        md ..\source\build
-        pushd ..\source\build
+        md ..\vcpkg\build
+        pushd ..\vcpkg\build
         cmake -S \
           -G "Visual Studio 17 2022" \
           -DCMAKE_INSTALL_PREFIX=bin \
