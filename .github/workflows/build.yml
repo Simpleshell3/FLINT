@@ -1,4 +1,4 @@
-name: Build Moja Flint with VCPKG
+         name: Build Moja Flint with VCPKG
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
       run: |
         ls 
         md Source\build
-        pushd Source\build
+        cd Source\build
         cmake -S .. \
           -G "Visual Studio 17 2022" \
           -DCMAKE_INSTALL_PREFIX=bin \
@@ -49,4 +49,3 @@ jobs:
           -DENABLE_MOJA_MODULES_LIBPQ:BOOL=ON \
           -DENABLE_MOJA_MODULES_POCO:BOOL=ON
 
-        popd
