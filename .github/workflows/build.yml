@@ -30,7 +30,7 @@ jobs:
 
     - name: Ensure vcpkg.json is available
       run: |
-          copy FLINT/Source/vcpkg.json FLINT/Source/vcpkg/vcpkg.json
+          copy Source/vcpkg.json FLINT/Source/vcpkg/vcpkg.json
 
     - name: Build Dependencies with VCPKG
       run: |
