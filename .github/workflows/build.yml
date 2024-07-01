@@ -34,7 +34,7 @@ jobs:
 
     - name: Build Dependencies with VCPKG
       run: |
-        if not exist FLINT/Source/build mkdir FLINT/Source/build
+        mkdir FLINT/Source/build
         pushd FLINT/Source/build
 
         REM If OpenSSL fails to build, just keep retrying until it does.
