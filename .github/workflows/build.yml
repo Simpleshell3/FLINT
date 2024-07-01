@@ -1,4 +1,4 @@
-         name: Build Moja Flint with VCPKG
+name: Build Moja Flint with VCPKG
 
 on:
   push:
