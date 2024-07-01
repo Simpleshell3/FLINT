@@ -1,4 +1,4 @@
-name: Build Moja Flint
+name: Build Moja Flint with VCPKG
 
 on:
   push:
@@ -11,58 +11,60 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository  # Step to checkout the repository
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Visual Studio
+    - name: Set up Visual Studio 2022
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
+        version: 17  # Use Visual Studio 2022
 
-    - name: Install CMake
+    - name: Install VCPKG if not already installed
       run: |
-        Invoke-WebRequest -Uri https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2-win64-x64.msi -OutFile cmake.msi
-        Start-Process msiexec.exe -Wait -ArgumentList '/I cmake.msi /quiet'
+        if not exist FLINT/Source/vcpkg (
+          git clone https://github.com/microsoft/vcpkg.git FLINT/Source/vcpkg
+          pushd FLINT/Source/vcpkg
+          .\bootstrap-vcpkg.bat
+          popd
+        )
 
-    - name: Install Boost
+    - name: Ensure vcpkg.json is available
       run: |
-        Invoke-WebRequest -Uri https://dl.bintray.com/boostorg/release/1.63.0/binaries/boost_1_63_0-msvc-14.1-64.exe -OutFile boost.exe
-        Start-Process boost.exe -Wait -ArgumentList '/S /D=C:\local\boost_1_63_0'
+        if not exist FLINT/Source/vcpkg/vcpkg.json (
+          copy FLINT/Source/vcpkg.json FLINT/Source/vcpkg/vcpkg.json
+        )
 
-    - name: Install OpenSSL
+    - name: Build Dependencies with VCPKG
       run: |
-        Invoke-WebRequest -Uri https://slproweb.com/download/Win64OpenSSL-1_1_0L.exe -OutFile openssl.exe
-        Start-Process openssl.exe -Wait -ArgumentList '/silent /verysilent /suppressmsgboxes /DIR=C:\local\openssl'
+        if not exist FLINT/Source/build mkdir FLINT/Source/build
+        pushd FLINT/Source/build
 
-    - name: Install Eigen
-      run: |
-        Invoke-WebRequest -Uri https://gitlab.com/libeigen/eigen/-/archive/3.3.3/eigen-3.3.3.zip -OutFile eigen.zip
-        Expand-Archive -Path eigen.zip -DestinationPath C:\local\eigen
+        REM If OpenSSL fails to build, just keep retrying until it does.
+        cmake -S ../vcpkg ^
+          -G "Visual Studio 17 2022" ^
+          -DCMAKE_INSTALL_PREFIX=bin ^
+          -DVCPKG_TARGET_TRIPLET=moja-x64-windows ^
+          -DVCPKG_INSTALL_OPTIONS="--x-abi-tools-use-exact-versions" ^
+          -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake ^
+          -DENABLE_TESTS:BOOL=ON ^
+          -DENABLE_MOJA_MODULES_ZIPPER:BOOL=ON ^
+          -DENABLE_MOJA_MODULES_GDAL:BOOL=ON ^
+          -DENABLE_MOJA_MODULES_LIBPQ:BOOL=ON ^
+          -DENABLE_MOJA_MODULES_POCO:BOOL=ON
 
-    - name: Install POCO
-      run: |
-        Invoke-WebRequest -Uri https://pocoproject.org/releases/poco-1.7.7/poco-1.7.7-all.zip -OutFile poco.zip
-        Expand-Archive -Path poco.zip -DestinationPath C:\local\poco
+        popd
 
-    - name: Download and Install SQLite Amalgamation
+    - name: Build Moja Flint Application
       run: |
-        $sqliteUrl = 'https://www.sqlite.org/2017/sqlite-amalgamation-3170000.zip'
-        Invoke-WebRequest -Uri $sqliteUrl -OutFile 'sqlite.zip'
-        Expand-Archive -Path 'sqlite.zip' -DestinationPath 'C:\local\sqlite'
-
-    - name: Download and Install Turtle
-      run: |
-        $turtleUrl = 'https://github.com/mat007/turtle/archive/v1.3.0.zip'
-        Invoke-WebRequest -Uri $turtleUrl -OutFile 'turtle.zip'
-        Expand-Archive -Path 'turtle.zip' -DestinationPath 'C:\local\turtle'
-
-    - name: Build Moja Flint Application  # Step to build Flint application
-      run: |
-        mkdir flint_build
-        cd flint_build
-        cmake -G "Visual Studio 16 2019" `
-              -DCMAKE_PREFIX_PATH="C:/local/boost_1_63_0;C:/local/openssl;C:/local/eigen;C:/local/poco;C:/local/sqlite;C:/local/turtle" `
-              ../FLINT/Source
+        mkdir FLINT/Source/flint_build
+        cd FLINT/Source/flint_build
+        cmake -G "Visual Studio 17 2022" ^
+              -DCMAKE_PREFIX_PATH=../build/bin ^
+              ../../FLINT/Source
         cmake --build . --config Release
 
-  
+    - name: Test Moja Flint Application
+      run: |
+        cd FLINT/Source/flint_build
+        ctest --output-on-failure
