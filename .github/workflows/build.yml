@@ -23,6 +23,7 @@ jobs:
     - name: Install VCPKG if not already installed
       run: |
           git clone https://github.com/microsoft/vcpkg.git vcpkg/vcpkg
+          copy Source/vcpkg.json vcpkg/vcpkg/vcpkg.json
           pushd vcpkg/vcpkg
           .\bootstrap-vcpkg.bat
           popd
