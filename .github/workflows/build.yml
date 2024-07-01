@@ -26,7 +26,7 @@ jobs:
           vcpkg install 
           popd
 
-    - name: Build Dependencies with VCPKG
+    - name: Build with VCPKG
       run: |
         ls 
         mkdir Source\build
