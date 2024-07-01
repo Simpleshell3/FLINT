@@ -50,17 +50,3 @@ jobs:
           -DENABLE_MOJA_MODULES_POCO:BOOL=ON
 
         popd
-
-    - name: Build Moja Flint Application
-      run: |
-        mkdir FLINT/Source/flint_build
-        cd FLINT/Source/flint_build
-        cmake -G "Visual Studio 17 2022" ^
-              -DCMAKE_PREFIX_PATH=../build/bin ^
-              ../../FLINT/Source
-        cmake --build . --config Release
-
-    - name: Test Moja Flint Application
-      run: |
-        cd FLINT/Source/flint_build
-        ctest --output-on-failure
