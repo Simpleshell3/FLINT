@@ -34,8 +34,8 @@ jobs:
 
     - name: Build Dependencies with VCPKG
       run: |
-        mkdir FLINT/Source/build
-        pushd FLINT/Source/build
+        mkdir /build
+        pushd /build
 
         # If OpenSSL fails to build, just keep retrying until it does.
         cmake -S ../vcpkg \
