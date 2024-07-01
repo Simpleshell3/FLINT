@@ -20,11 +20,10 @@ jobs:
         arch: x64
         version: 17  # Use Visual Studio 2022
 
-    - name: Install VCPKG and dependiencies
+    - name: Install dependiencies
       run: |
-          git clone https://github.com/microsoft/vcpkg.git vcpkg/vcpkg
-          copy Source/vcpkg.json vcpkg/vcpkg/vcpkg.json
-          pushd vcpkg/vcpkg
+          copy Source/vcpkg.json C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/vcpkg/vcpkg.json
+          pushd C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/vcpkg
           .\bootstrap-vcpkg.bat
           .\vcpkg install 
           popd
