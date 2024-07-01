@@ -22,17 +22,15 @@ jobs:
 
     - name: Install dependiencies
       run: |
-          copy Source/vcpkg.json C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/vcpkg/vcpkg.json
-          pushd C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/vcpkg
-          .\bootstrap-vcpkg.bat
-          .\vcpkg install 
+          pushd Source 
+          vcpkg install 
           popd
 
     - name: Build Dependencies with VCPKG
       run: |
         ls 
         mkdir Source\build
-        cd Source\build
+        pushd Source\build
         cmake --version
         cmake -S .. -G "Visual Studio 17 2022"  -DCMAKE_INSTALL_PREFIX=bin -DVCPKG_TARGET_TRIPLET=moja-x64-windows -DVCPKG_INSTALL_OPTIONS="--x-abi-tools-use-exact-versions" -DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake -DENABLE_TESTS:BOOL=ON -DENABLE_MOJA_MODULES_ZIPPER:BOOL=ON -DENABLE_MOJA_MODULES_GDAL:BOOL=ON -DENABLE_MOJA_MODULES_LIBPQ:BOOL=ON -DENABLE_MOJA_MODULES_POCO:BOOL=ON
 
