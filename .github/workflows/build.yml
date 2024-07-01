@@ -1,0 +1,68 @@
+name: Build Moja Flint
+
+on:
+  push:
+    branches: [ workflow ]
+  pull_request:
+    branches: [ workflow ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository  # Step to checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Visual Studio
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Install CMake
+      run: |
+        Invoke-WebRequest -Uri https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2-win64-x64.msi -OutFile cmake.msi
+        Start-Process msiexec.exe -Wait -ArgumentList '/I cmake.msi /quiet'
+
+    - name: Install Boost
+      run: |
+        Invoke-WebRequest -Uri https://dl.bintray.com/boostorg/release/1.63.0/binaries/boost_1_63_0-msvc-14.1-64.exe -OutFile boost.exe
+        Start-Process boost.exe -Wait -ArgumentList '/S /D=C:\local\boost_1_63_0'
+
+    - name: Install OpenSSL
+      run: |
+        Invoke-WebRequest -Uri https://slproweb.com/download/Win64OpenSSL-1_1_0L.exe -OutFile openssl.exe
+        Start-Process openssl.exe -Wait -ArgumentList '/silent /verysilent /suppressmsgboxes /DIR=C:\local\openssl'
+
+    - name: Install Eigen
+      run: |
+        Invoke-WebRequest -Uri https://gitlab.com/libeigen/eigen/-/archive/3.3.3/eigen-3.3.3.zip -OutFile eigen.zip
+        Expand-Archive -Path eigen.zip -DestinationPath C:\local\eigen
+
+    - name: Install POCO
+      run: |
+        Invoke-WebRequest -Uri https://pocoproject.org/releases/poco-1.7.7/poco-1.7.7-all.zip -OutFile poco.zip
+        Expand-Archive -Path poco.zip -DestinationPath C:\local\poco
+
+    - name: Download and Install SQLite Amalgamation
+      run: |
+        $sqliteUrl = 'https://www.sqlite.org/2017/sqlite-amalgamation-3170000.zip'
+        Invoke-WebRequest -Uri $sqliteUrl -OutFile 'sqlite.zip'
+        Expand-Archive -Path 'sqlite.zip' -DestinationPath 'C:\local\sqlite'
+
+    - name: Download and Install Turtle
+      run: |
+        $turtleUrl = 'https://github.com/mat007/turtle/archive/v1.3.0.zip'
+        Invoke-WebRequest -Uri $turtleUrl -OutFile 'turtle.zip'
+        Expand-Archive -Path 'turtle.zip' -DestinationPath 'C:\local\turtle'
+
+    - name: Build Moja Flint Application  # Step to build Flint application
+      run: |
+        mkdir flint_build
+        cd flint_build
+        cmake -G "Visual Studio 16 2019" `
+              -DCMAKE_PREFIX_PATH="C:/local/boost_1_63_0;C:/local/openssl;C:/local/eigen;C:/local/poco;C:/local/sqlite;C:/local/turtle" `
+              ../FLINT/Source
+        cmake --build . --config Release
+
+  
