@@ -34,6 +34,7 @@ jobs:
 
     - name: Build Dependencies with VCPKG
       run: |
+        mkdir Source/build
         cd Source/build
         cmake -S ../vcpkg \
           -G "Visual Studio 17 2022" \
