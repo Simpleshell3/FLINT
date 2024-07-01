@@ -34,6 +34,7 @@ jobs:
 
     - name: Build Dependencies with VCPKG
       run: |
+        ls
         mkdir Source/build
         cd Source/build
         cmake -S ../vcpkg \
