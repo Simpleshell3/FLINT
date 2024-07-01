@@ -22,15 +22,15 @@ jobs:
 
     - name: Install VCPKG if not already installed
       run: |
-          git clone https://github.com/microsoft/vcpkg.git FLINT/Source/vcpkg
-          pushd FLINT/Source/vcpkg
+          git clone https://github.com/microsoft/vcpkg.git Source/vcpkg
+          pushd Source/vcpkg
           .\bootstrap-vcpkg.bat
           popd
 
 
     - name: Ensure vcpkg.json is available
       run: |
-          copy Source/vcpkg.json FLINT/Source/vcpkg/vcpkg.json
+          copy Source/vcpkg.json Source/vcpkg/vcpkg.json
 
     - name: Build Dependencies with VCPKG
       run: |
