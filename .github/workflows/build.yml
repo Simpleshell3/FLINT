@@ -34,10 +34,7 @@ jobs:
 
     - name: Build Dependencies with VCPKG
       run: |
-        mkdir /build
-        pushd /build
-
-        # If OpenSSL fails to build, just keep retrying until it does.
+        cd FLINT/Source/build
         cmake -S ../vcpkg \
           -G "Visual Studio 17 2022" \
           -DCMAKE_INSTALL_PREFIX=bin \
