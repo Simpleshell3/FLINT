@@ -37,7 +37,7 @@ jobs:
         mkdir FLINT/Source/build
         pushd FLINT/Source/build
 
-        REM If OpenSSL fails to build, just keep retrying until it does.
+        # If OpenSSL fails to build, just keep retrying until it does.
         cmake -S ../vcpkg ^
           -G "Visual Studio 17 2022" ^
           -DCMAKE_INSTALL_PREFIX=bin ^
