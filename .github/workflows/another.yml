@@ -23,9 +23,12 @@ jobs:
     - name: Install Dpendencies
       shell: pwsh
       run: |
-         git clone https://github.com/microsoft/vcpkg.git vcpkg/vcpkg
-         pushd vcpkg/vcpkg
+         pushd vcpkg
+         git clone https://github.com/microsoft/vcpkg.git 
+         pushd .\vcpkg\
          .\bootstrap-vcpkg.bat
+         popd
+         pushd \vcpkg
          .\vcpkg install `
           boost-test:x64-windows `
           boost-program-options:x64-windows `
