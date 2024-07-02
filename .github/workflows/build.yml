@@ -20,14 +20,11 @@ jobs:
         arch: x64
         version: 17  # Use Visual Studio 2022
 
-    - name: Install VCPKG if not already installed
+    - name: Install Dpendencies
       shell: pwsh
       run: |
-          pushd vcpkg
-          git clone https://github.com/microsoft/vcpkg.git
-          pushd vcpkg
-          .\bootstrap-vcpkg.bat
-          popd
+          pushd Source
+          vcpkg install
           popd
      #     pushd Source 
       #    vcpkg install 
