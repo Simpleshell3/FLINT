@@ -22,6 +22,7 @@ jobs:
 
     - name: Install dependiencies
       run: |
+        pushed "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg"
         vcpkg install `
           boost-test:x64-windows `
           boost-program-options:x64-windows `
@@ -33,9 +34,10 @@ jobs:
           gdal:x64-windows `
           sqlite3:x64-windows `
           boost-ublas:x64-windows
+        popd
      #     pushd Source 
       #    vcpkg install 
-       #   popd
+         
 
     - name: Build with VCPKG
       run: |
