@@ -28,7 +28,9 @@ jobs:
          git clone https://github.com/microsoft/vcpkg.git 
          pushd .\vcpkg\
          .\bootstrap-vcpkg.bat
+         pushd ports
          ls
+         popd
          .\vcpkg install `
           boost-test:x64-windows `
           boost-program-options:x64-windows `
