@@ -20,11 +20,11 @@ jobs:
         arch: x64
         version: 17  # Use Visual Studio 2022
 
-    - name: Install dependiencies
-      run: |
-          pushd Source 
-          vcpkg install 
-          popd
+    # - name: Install dependiencies
+     # run: |
+     #     pushd Source 
+      #    vcpkg install 
+       #   popd
 
     - name: Build with VCPKG
       run: |
