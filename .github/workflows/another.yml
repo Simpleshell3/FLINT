@@ -20,38 +20,9 @@ jobs:
         arch: x64
         version: 16  # Use Visual Studio 2019
 
-    - name: Install Dpendencies
+    - name: Install and run Dpendencies
       shell: pwsh
       run: |
-         pushd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg\"
-         ls
-         .\bootstrap-vcpkg
-         .\vcpkg install `
-          boost-test:x64-windows `
-          boost-program-options:x64-windows `
-          boost-log:x64-windows `
-          turtle:x64-windows `
-          zipper:x64-windows `
-          poco:x64-windows `
-          libpq:x64-windows `
-          gdal:x64-windows `
-          sqlite3:x64-windows `
-          boost-ublas:x64-windows
-          popd
-     #     pushd Source 
-      #    vcpkg install 
-         
-
-    - name: Build with VCPKG
-      shell: pwsh
-      run: |
-        ls 
-        mkdir Source\build
-        pushd Source\build
-        cmake --version
-        cmake -S .. -G "Visual Studio 16 2019" `
-        -DCMAKE_INSTALL_PREFIX=/moja `
-        -DVCPKG_TARGET_TRIPLET=x64-windows `
-        -DENABLE_TESTS=OFF `
-        -DCMAKE_TOOLCHAIN_FILE=..\vcpkg\scripts\buildsystems\vcpkg.cmake `
-         ..
+         pushd vcpkg
+         call vcpkg_setup_vs2022_win_x64.bat
+         popd
