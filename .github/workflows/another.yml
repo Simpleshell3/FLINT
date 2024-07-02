@@ -26,3 +26,16 @@ jobs:
          pushd vcpkg
          .\vcpkg_setup_vs2022_win_x64.bat
          popd
+         
+    - name: Create executable package
+      shell: pwsh
+      run: |
+        Set-Location -Path Source\build
+        cpack -G ZIP
+        Move-Item -Path *.zip -Destination ../../moja-flint.zip  # Adjust the path as needed
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: moja-flint
+        path: moja-flint.zip
