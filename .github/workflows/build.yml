@@ -20,22 +20,12 @@ jobs:
         arch: x64
         version: 17  # Use Visual Studio 2022
 
-    - name: Install dependiencies
+    - name: Install VCPKG if not already installed
       run: |
-        pushd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg"
-        .\bootstrap-vcpkg
-        vcpkg install `
-          boost-test:x64-windows `
-          boost-program-options:x64-windows `
-          boost-log:x64-windows `
-          turtle:x64-windows `
-          zipper:x64-windows `
-          poco:x64-windows `
-          libpq:x64-windows `
-          gdal:x64-windows `
-          sqlite3:x64-windows `
-          boost-ublas:x64-windows
-        popd
+          pushd vcpkg
+          git clone https://github.com/microsoft/vcpkg.git 
+          .\bootstrap-vcpkg.bat
+          popd
      #     pushd Source 
       #    vcpkg install 
          
