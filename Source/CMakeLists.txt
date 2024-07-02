@@ -187,6 +187,7 @@ add_custom_target(uninstall
 
 #INCLUDE(InstallRequiredSystemLibraries)
 
+set(CPACK_PACKAGE_NAME "moja-flint")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
 SET(CPACK_PACKAGE_VENDOR "Me, myself, and I")
 #SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
