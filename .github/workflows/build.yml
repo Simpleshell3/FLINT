@@ -23,6 +23,7 @@ jobs:
     - name: Install dependiencies
       run: |
         pushd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg"
+        .\bootstrap-vcpkg
         vcpkg install `
           boost-test:x64-windows `
           boost-program-options:x64-windows `
