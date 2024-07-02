@@ -21,16 +21,20 @@ jobs:
         version: 17  # Use Visual Studio 2022
 
     - name: Install VCPKG if not already installed
+      shell: pwsh
       run: |
           pushd vcpkg
-          git clone https://github.com/microsoft/vcpkg.git 
-          call bootstrap-vcpkg.bat
+          git clone https://github.com/microsoft/vcpkg.git
+          pushd vcpkg
+          .\bootstrap-vcpkg.bat
+          popd
           popd
      #     pushd Source 
       #    vcpkg install 
          
 
     - name: Build with VCPKG
+      shell: pwsh
       run: |
         ls 
         mkdir Source\build
