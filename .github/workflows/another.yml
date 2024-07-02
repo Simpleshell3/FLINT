@@ -23,7 +23,7 @@ jobs:
     - name: Install Dpendencies
       shell: pwsh
       run: |
-         pushed "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg\"
+         pushd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg\"
          .\vcpkg install `
           boost-test:x64-windows `
           boost-program-options:x64-windows `
