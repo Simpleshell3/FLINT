@@ -20,8 +20,19 @@ jobs:
         arch: x64
         version: 17  # Use Visual Studio 2022
 
-    # - name: Install dependiencies
-     # run: |
+    - name: Install dependiencies
+      run: |
+        vcpkg install `
+          boost-test:x64-windows `
+          boost-program-options:x64-windows `
+          boost-log:x64-windows `
+          turtle:x64-windows `
+          zipper:x64-windows `
+          poco:x64-windows `
+          libpq:x64-windows `
+          gdal:x64-windows `
+          sqlite3:x64-windows `
+          boost-ublas:x64-windows
      #     pushd Source 
       #    vcpkg install 
        #   popd
