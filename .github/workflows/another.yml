@@ -18,7 +18,15 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-        version: 16  # Use Visual Studio 2019
+        version: 17  
+
+    - name: Cache vcpkg
+      uses: actions/cache@v3
+      with:
+        path: vcpkg
+        key: vcpkg-${{ runner.os }}-${{ hashFiles('Source/vcpkg.json') }}
+        restore-keys: |
+          vcpkg-${{ runner.os }}-
 
     - name: Install and run Dpendencies
       shell: pwsh
@@ -39,3 +47,8 @@ jobs:
       with:
         name: moja-flint
         path: moja-flint.zip
+
+    - name: Clean up after build
+      shell: pwsh
+      run: |
+        Remove-Item -Recurse -Force Source\build
