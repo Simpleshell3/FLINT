@@ -30,7 +30,7 @@ jobs:
     - name: Create executable package
       shell: pwsh
       run: |
-        Set-Location -Path Source\build
+        Set-Location -Path Source
         cpack -G ZIP
         Move-Item -Path *.zip -Destination ../../moja-flint.zip  # Adjust the path as needed
 
