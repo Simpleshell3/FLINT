@@ -28,7 +28,7 @@ jobs:
         restore-keys: |
           vcpkg-${{ runner.os }}-
 
-    - name: Install and run Dpendencies
+    - name: Install and run Dependencies
       shell: pwsh
       run: |
          pushd vcpkg
@@ -38,10 +38,11 @@ jobs:
     - name: Create executable package
       shell: pwsh
       run: |
-        Set-Location -Path Source
+        pushd Source/build
         ls
-        cpack -G ZIP
-        Move-Item -Path *.zip -Destination ../../moja-flint.zip  # Adjust the path as needed
+        Compress-Archive -Path * -DestinationPath moja-flint.zip -Force 
+        Move-Item -Path *.zip -Destination ../../moja-flint.zip 
+        popd
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
