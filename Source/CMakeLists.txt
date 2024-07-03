@@ -185,7 +185,7 @@ add_custom_target(uninstall
 #############################################################
 # Enable packaging
 
-#INCLUDE(InstallRequiredSystemLibraries)
+INCLUDE(InstallRequiredSystemLibraries)
 
 set(CPACK_PACKAGE_NAME "moja-flint")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "My funky project")
