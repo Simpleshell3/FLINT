@@ -39,6 +39,7 @@ jobs:
       shell: pwsh
       run: |
         Set-Location -Path Source
+        ls
         cpack -G ZIP
         Move-Item -Path *.zip -Destination ../../moja-flint.zip  # Adjust the path as needed
 
