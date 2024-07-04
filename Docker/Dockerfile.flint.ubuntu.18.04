@@ -7,7 +7,7 @@
 #
 # ==================================================================================================================
 
-FROM moja/baseimage:ubuntu-18.04
+FROM mojaglobal/flint-baseimage:latest
 
 LABEL maintainer="info@moja.global"
 
