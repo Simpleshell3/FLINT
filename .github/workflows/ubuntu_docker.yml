@@ -29,7 +29,7 @@ jobs:
       run: |
         ls
         pushd Docker
-        docker build  -f Dockerfile.flint.ubuntu.18.04 --build_arg BUILD_TYPE=RELEASE --build-arg NUM_CPU=4  --build-arg FLINT_BRANCH=develop -t moja/flint:ubuntu-18.04 .
+        docker build  -f Dockerfile.flint.ubuntu.18.04 -t moja/flint:ubuntu-18.04 .
         popd
 
     - name: Save Docker image as artifact
