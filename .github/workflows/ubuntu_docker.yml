@@ -1,0 +1,43 @@
+name: Build Docker Image-ubuntu
+
+on:
+  push:
+    branches: [ workflow ]
+  pull_request:
+    branches: [ workflow ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Build Docker image
+      run: |
+        pushd /Docker
+        docker build  -f Dockerfile.flint.ubuntu.18.04 --build_arg BUILD_TYPE=RELEASE --build-arg NUM_CPU=4  --build-arg FLINT_BRANCH=develop -t moja/flint:ubuntu-18.04 .
+        popd
+
+    - name: Save Docker image as artifact
+      run: |
+        docker save  moja/flint:ubuntu-18.04 | gzip > flint_docker_image.tar.gz
+      shell: bash
+
+    - name: Upload Docker image artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: docker-image
+        path: flint_docker_image.tar.gz
