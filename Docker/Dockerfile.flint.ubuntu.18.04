@@ -72,7 +72,7 @@ RUN wget https://pocoproject.org/releases/poco-${POCO_VERSION}/poco-${POCO_VERSI
 
 # GET FLINT
 WORKDIR $ROOTDIR/
-RUN cd src && git clone -b ${FLINT_BRANCH} https://${GITHUB_AT}@github.com/moja-global/flint.git flint
+RUN cd src && git clone -b ${FLINT_BRANCH} https://${GITHUB_AT}@github.com/moja-global/FLINT.git flint
                                           
 WORKDIR $ROOTDIR/src/flint/Source/build
 RUN cmake   -DCMAKE_BUILD_TYPE=RELEASE \
