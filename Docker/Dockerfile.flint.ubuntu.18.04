@@ -21,6 +21,15 @@ ENV ROOTDIR /usr/local/
 
 WORKDIR $ROOTDIR/
 
+## Zipper
+RUN cd src && git clone --recursive https://github.com/sebastiandev/zipper.git 
+WORKDIR $ROOTDIR/src/zipper/build
+RUN    cmake .. \
+	&& make -s -j $NUM_CPU \
+    && make install \
+    && make clean  \
+    && cd $ROOTDIR
+
 # set environment variables
 ENV PATH /usr/local/bin:$PATH
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
