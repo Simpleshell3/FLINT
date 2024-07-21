@@ -41,7 +41,7 @@ ENV GDAL_HTTP_VERSION 2
 RUN apt-get install -y postgresql-client-10 \
     postgresql-server-dev-10
 
-ADD https://www.sqlite.org/2022/sqlite-autoconf-${SQLITE_VERSION}.tar.gz $ROOTDIR/src/
+ADD https://www.sqlite.org/2022/sqlite-autoconf-${SQLITE_VERSION}.tar.gz $ROOTDIR/src
 RUN cd src && tar -xzf sqlite-autoconf-${SQLITE_VERSION}.tar.gz -C /usr/local/ \
 	&& cp /usr/local/sqlite-autoconf-${SQLITE_VERSION}/sqlite3.c /usr/include/ \
     && cd $ROOTDIR && rm -Rf src/sqlite*
