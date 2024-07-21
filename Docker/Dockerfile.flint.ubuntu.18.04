@@ -39,12 +39,14 @@ RUN cd src && tar -xzf sqlite-autoconf-${SQLITE_VERSION}.tar.gz -C /usr/local/ \
 
 ## Zipper
 RUN cd src && git clone --recursive https://github.com/sebastiandev/zipper.git 
-cd $ROOTDIR/src/zipper/build
+WORKDIR $ROOTDIR/src/zipper/build
 RUN    cmake .. \
 	&& make -s -j $NUM_CPU \
     && make install \
     && make clean  \
     && cd $ROOTDIR
+
+WORKDIR $ROOTDIR/
 
 RUN wget https://pocoproject.org/releases/poco-${POCO_VERSION}/poco-${POCO_VERSION}-all.tar.gz \
     && tar -xzf poco-${POCO_VERSION}-all.tar.gz \
