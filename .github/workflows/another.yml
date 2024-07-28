@@ -35,21 +35,18 @@ jobs:
          .\vcpkg_setup_vs2022_win_x64.bat
          popd
          
-    - name: Create executable package
-      shell: pwsh
-      run: |
-        pushd Source/build
-        ls
-        Compress-Archive -Path * -DestinationPath moja-flint.zip -Force 
-        Move-Item -Path *.zip -Destination ../../moja-flint.zip 
-        popd
+    - name: Build
+      run: cmake --build Source/build --config Release
+
+    - name: Package with CPack
+      run: cmake --build Source/build --config Release --target package
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: moja-flint
-        path: moja-flint.zip
-
+        path: Source/build/*.zip
+        
     - name: Clean up after build
       shell: pwsh
       run: |
