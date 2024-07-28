@@ -28,7 +28,7 @@ jobs:
         restore-keys: |
           vcpkg-${{ runner.os }}-
 
-    - name: Install and run Dependencies
+    - name: Install and run build
       shell: pwsh
       run: |
          pushd vcpkg
